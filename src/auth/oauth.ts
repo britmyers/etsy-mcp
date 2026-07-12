@@ -155,13 +155,13 @@ export class OAuthClient {
           server.close();
           resolve({
             code,
-            redirectUri: `http://localhost:${(server.address() as any).port}/callback`,
+            redirectUri: `http://localhost:3003/callback`,
             codeVerifier,
           });
         }
       );
 
-      server.listen(0, async () => {
+      server.listen(3003, async () => {
         const port = (server.address() as any).port;
         const redirectUri = `http://localhost:${port}/callback`;
         const authData = await this.buildAuthorizationUrl(redirectUri);

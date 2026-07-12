@@ -101,6 +101,7 @@ if (isDirectRun) {
   await import("dotenv/config");
   const apiKey = process.env.ETSY_API_KEY;
   const sharedSecret = process.env.ETSY_SHARED_SECRET;
+  const tokenStorePath = process.env.ETSY_TOKEN_STORE_PATH;
 
   if (!apiKey || !sharedSecret) {
     console.error("Error: ETSY_API_KEY and ETSY_SHARED_SECRET environment variables are required.");
@@ -108,7 +109,7 @@ if (isDirectRun) {
     process.exit(1);
   }
 
-  const server = createEtsyMcpServer({ apiKey, sharedSecret });
+  const server = createEtsyMcpServer({ apiKey, sharedSecret, tokenStorePath });
   const transport = new StdioServerTransport();
   server.connect(transport).catch((err) => {
     console.error("Fatal error:", err);

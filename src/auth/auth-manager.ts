@@ -44,5 +44,5 @@ export class AuthManager {
     const tokens = await this.oauthClient.exchangeCode(code, codeVerifier, redirectUri);
     await this.tokenStore.save(tokens);
     return tokens.access_token;
-  }
-}
+   }
+ }
