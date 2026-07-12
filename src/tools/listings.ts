@@ -98,6 +98,8 @@ export function registerListingsTools(server: McpServer, client: EtsyClient): vo
         materials: z.array(z.string()).optional().describe("Materials"),
         state: z.enum(["active", "inactive", "draft"]).optional().describe("Listing state"),
         taxonomy_id: z.number().optional().describe("Taxonomy ID"),
+        shop_section_id: z.number().optional().describe("Shop section ID"),
+        return_policy_id: z.number().optional().describe("Return policy ID"),
       },
     },
     async (args) => {
