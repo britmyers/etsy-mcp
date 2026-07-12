@@ -109,6 +109,26 @@ if (isDirectRun) {
     process.exit(1);
   }
 
+  // Bootstrap token store from env var on first boot (e.g. Railway deployment)
+  const bootstrapRefreshToken = process.env.ETSY_REFRESH_TOKEN;
+  if (bootstrapRefreshToken && tokenStorePath) {
+    const { existsSync, mkdirSync, writeFileSync } = await import("node:fs");
+    const { dirname } = await import("node:path");
+    if (!existsSync(tokenStorePath)) {
+      mkdirSync(dirname(tokenStorePath), { recursive: true });
+      writeFileSync(
+        tokenStorePath,
+        JSON.stringify({
+          access_token: "",
+          refresh_token: bootstrapRefreshToken,
+          expires_at: 0,
+        }, null, 2),
+        { mode: 0o600 }
+      );
+      console.error("Bootstrapped token store from ETSY_REFRESH_TOKEN env var.");
+    }
+  }
+
   const server = createEtsyMcpServer({ apiKey, sharedSecret, tokenStorePath });
   const transport = new StdioServerTransport();
   server.connect(transport).catch((err) => {
